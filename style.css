@@ -1,0 +1,208 @@
+
+
+    .cell{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        display: flex;
+        align-items:center;
+    }
+    p {
+        margin: auto;
+    }
+    
+
+    .basketwin{
+        width: 800px;
+        margin: 0 auto 0 auto;
+        background-color: rgb(219, 211, 203);
+        
+    }
+    #basket{
+        width: 800px;
+        min-height: 50px;
+        margin: 0 auto 0 auto;
+        background-color: rgb(219, 211, 203);
+        
+    }
+    .product{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 10px 0;
+    }
+    .productzagl{
+        width: 800px;
+        margin: 0 auto 0 auto;
+        background-color: rgb(224, 196, 167);
+    }
+    .product div{
+        flex: 3 1 80px;
+        text-align: center;
+    }
+    .productnav{
+        width: 800px;
+        height: 50px;
+        margin: 0 auto 0 auto;
+        background-color: rgb(224, 196, 167);
+    }
+    .butt{
+        display: flex;
+        justify-content: flex-end;
+    }
+    #total{
+        padding-left: 30px;
+    }
+    .butt button{
+        margin-right: 30px;
+        cursor: pointer;
+    }
+
+    .catalog{
+        width: 1140px;
+        margin: 0 auto;
+        padding-top: 58px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+    }
+
+
+
+.product-cont-elem {
+    position: relative;
+    width: 263px;
+    height: 364px;
+    background-color: #ffffff;
+    text-align: left;
+    margin-bottom: 38px;
+    -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+  }
+  
+  .product-cont-elem:hover {
+    -webkit-box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.15);
+  }
+  
+  .product-cont-elem:hover .product-cont-elem-img {
+    /*display: block;*/
+    opacity: 1;
+  }
+  
+  .product-cont-elem-img {
+    /*display: none;*/
+    position: absolute;
+    top: 0;
+    width: 263px;
+    height: 281px;
+    background-color: rgba(58, 56, 56, 0.83);
+    /*padding-top: 100px;*/
+    -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+    opacity: 0;
+  }
+  
+  .product-cont-elem-img-1 {
+    margin: 100px auto 0 auto;
+    width: 123px;
+    height: 39px;
+    border: 1px solid #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+  }
+  
+  .product-cont-elem-img-1:hover {
+    background-color: #080808;
+  }
+  
+  .product-cont-elem-img-1:active {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+  
+  .a-img1 {
+    border-radius: 3px;
+  }
+  
+  .product-cont-elem-img-2 {
+    width: 57px;
+    height: 39px;
+    border: 1px solid #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border-radius: 3px;
+  }
+  
+  .product-cont-elem-img-2:hover {
+    background-color: #222222;
+  }
+  
+  .product-cont-elem-img-2:active {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+  
+  .product-cont-elem-img-1 p {
+    font-family: Lato;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  
+  .product-cont-elem-img1 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .product-cont-elem-img1-col {
+    width: 9px;
+  }
+  
+  .product-cont-elem-text {
+    padding-left: 15px;
+  }
+  
+  .product-cont-img-p1 {
+    font-family: Lato;
+    font-size: 13px;
+    line-height: 40px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #222222;
+  }
+  
+  .product-cont-img-p2 {
+    font-size: 16px;
+    font-family: Lato;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    color: #f16d7f;
+  }
