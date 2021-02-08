@@ -1,6 +1,17 @@
+.slider-win{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background-color: rgb(53 61 64 / 90%);
+}
+
 .slider {
     height: 100vh;
     position: relative;
+    top: 25%;
+    left: 25%;
+    
     overflow: hidden;
   }
   
@@ -32,7 +43,7 @@
     object-fit: cover;
   }
   
-  .slider-leftArrow, .slider-rightArrow {
+  .slider-leftArrow, .slider-rightArrow, .closed-captioning {
     position: absolute;
     top: 47%;
     z-index: 3;
@@ -40,7 +51,10 @@
     cursor: pointer;
     font-size: 50px;
   }
-  
+  .closed-captioning{
+    right: 5%;
+    top: 5%;
+  }
   .slider-leftArrow {
     left: 5%;
   }
