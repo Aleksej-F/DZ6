@@ -36,6 +36,15 @@
         margin: 0 auto 0 auto;
         background-color: rgb(224, 196, 167);
     }
+    .basket-to-del{
+      color: #2c2b2b;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .basket-to-del:hover{
+      color: #da1919;
+      
+    }
     .product div{
         flex: 3 1 80px;
         text-align: center;

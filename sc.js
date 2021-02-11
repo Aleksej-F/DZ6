@@ -1,49 +1,47 @@
 'use strict';
 
-class Basket {  // корзина
-    constructor() {
-        this.segments = [];
-    }
-    /*
-    completion() {  // наполнение корзины
-        let a = Math.floor(Math.random() * (6) + 1);     // колличество товаров в корзине
-        let title = ['кросовки', 'тапки', 'футболка', 'джинсы'];
-        for (let i = 0; i < a; i++) {
-            let productName = Math.floor(Math.random() * (3));            // выбор товара
-            let quantity = Math.floor(Math.random() * (10) + 1);         // штук
-            let productPrice = Math.floor(Math.random() * (300) + 50);  // цена
-            this.segments.push(new Product(title[productName], quantity, productPrice));
-        }
-    }*/
-    completion(product){    // наполнение корзины
+let basket = {  // корзина
+    
+    segments : [],  // товары в корзине
+       
+    completion (product) {    // добавление товара в корзину
         let productName = catalog.segments[product].title;            // выбор товара
-        let quantity = 1;         // штук
-        for (let prod of this.segments){
-            if (prod.title === productName) {
-                ++prod.quantity;
+        let quantity = 1;         // штук по умолнанию
+        for (let prod of this.segments){   //перебор товаров в корзине
+            if (prod.title === productName) {  // если добавленный товар есть в корзине
+                ++prod.quantity;               // увеличиваем кол-во штук в корзине
                 return;
             }
         }
         
         let productPrice = catalog.segments[product].price;  // цена
-        this.segments.push(new Product(productName, quantity, productPrice));
-    }
-    renderingBasket(){      // отрисовка корзины
-        let basket = document.getElementById('basket');
-        basket.innerHTML = '';
+        this.segments.push(new Product(productName, quantity, productPrice)); // добавляем товар в корзину
+    },
+
+    renderingBasket() {      // отрисовка товаров в корзине
+        let bask = document.getElementById('basket');
+        bask.innerHTML = '';
+        
         for (let i = 0; i<this.segments.length; i++ ){
-        let productBasket = `
+            let productBasket = `
             <div class="product">
             <div>${this.segments[i].title}</div>
             <div>${this.segments[i].quantity}</div>
             <div class="price">${this.segments[i].price}</div>
+            <div> <i class="fas fa-times-circle basket-to-del" data="${i}"></i></div>
             </div>
             `;
+            bask.insertAdjacentHTML("beforeend", productBasket);
             
-            basket.insertAdjacentHTML("beforeend", productBasket);
+            let divI = document.getElementsByClassName('basket-to-del');
+                        
+            divI[divI.length-1].addEventListener('click', basket.dellBasket);
+           
         }
-    }
-    countBasketPrice(){     // подсчет стоимости товара в корзине
+            
+                  //  images.setNextLeftImage();            });
+    },
+    countBasketPrice() {     // подсчет стоимости товара в корзине
         let total = 0;
         let quantity = 0;
         for (let i = 0; i<this.segments.length; i++ ){
@@ -53,7 +51,8 @@ class Basket {  // корзина
         let board = document.getElementById('total');
         
         board.innerHTML = `В корзине: ${quantity} товаров на сумму ${total} рублей`;
-    }
+    },
+
     getBasket(){            // создание окна корзины
         let board = document.getElementById('bask');
         board.className = 'basketwin';
@@ -64,6 +63,7 @@ class Basket {  // корзина
                 <div>Наименование</div>
                 <div>Колличество</div>
                 <div>Цена</div>
+                <div></div>
             </div>
             <div id="basket"></div>
             <div class="productnav">
@@ -71,23 +71,36 @@ class Basket {  // корзина
                 <div class="butt"> <button data-some="clear">Очистить</button></div>
             </div>
         `;          // разметка корзины  
-        //<button data-some="fill">Наполнить</button>
+        
                    
         board.insertAdjacentHTML("afterbegin", productMarkup);
         
         const buttons = document.querySelectorAll('button'); //
         
         buttons.forEach(function(button) {   
-            button.addEventListener('click', myCompl);   // вешаем слушатель на кнопки по клику
+            button.addEventListener('click', basket.clearBasket);   // вешаем слушатель на кнопки по клику очистка корзины
           
         });
-    }   
-    clearBasket() {     // очистка карзины
+    },  
+    clearBasket() {         // очистка корзины
         this.segments=[];
         document.getElementById('basket').innerHTML = ` `;
         document.getElementById('total').innerHTML = `Корзина пуста`;
-    }
+    },
+    
+    dellBasket (e) {          // удаление товара из корзины
+        let node = e.target;
+        let nodeDel = node.parentNode.parentNode;
+        node.parentNode.parentNode.parentNode.removeChild(nodeDel);
+        basket.segments.splice(this.getAttribute('data'),1);
+        if (basket.segments.length === 0) {
+            basket.clearBasket();
+        } else {
+            basket.countBasketPrice();
+        }
+    },
 } 
+
             
 class Product {  // продукт
     constructor(title, quantity, price) {
@@ -97,10 +110,10 @@ class Product {  // продукт
     }
 }
 
-class Catalog {  // каталог
-    constructor() {
-        this.segments = [];
-    }
+let catalog = {  // каталог
+    
+    segments : [], // товары в катологе
+
     completion(){ // наполнение каталога
         for (let a = 1; a < 9; ++a){
             let productName =`"rrrrr${a}"`;
@@ -110,14 +123,14 @@ class Catalog {  // каталог
             prod.img = `img/rectangle_${a}.jpg`;
             this.segments.push(prod);
         }
-    }
+    },
 
-     getCatalog() { // создание окна каталога
+    getCatalog() { // создание окна каталога
         let board = document.getElementById('catalog');
         board.className = 'catalog';
         board.innerHTML = ` `;
         let y = Math.floor(Math.random() * (4) );
-        for (let a = 0; a < y+4; a++){
+        for (let a = y; a < y+4; a++){
             let productMarkup = `   
             <div class="product-cont-elem">
                 <img src="${catalog.segments[a].img}" alt="">
@@ -140,23 +153,21 @@ class Catalog {  // каталог
         const butt = document.getElementsByClassName('product-cont-elem-img-1'); //
         const butt1 = document.getElementsByClassName('product-cont-elem'); //
         for (let i = 0; i < butt.length; i++) {   
-            butt[i].addEventListener('click', myClickToBasket);   // вешаем слушатель на кнопки по клику
-            butt1[i].addEventListener('click', myClickToSlaider);   // вешаем слушатель на изображение по клику
+            butt[i].addEventListener('click', catalog.myClickToBasket);   // вешаем слушатель на кнопки по клику для добавления товара в корзину
+            butt1[i].addEventListener('click', myClickToSlaider);   // вешаем слушатель на изображение по клику для открытия слайдера
         };
-    }
+    },
+
+    myClickToBasket(e) {   // клик по кнопке добавить товар в корзину 
+        e.stopPropagation();
+        basket.completion(Number(this.getAttribute('data')));   // добавить товар
+        basket.countBasketPrice();   // пересчет стоимости в корзине
+        basket.renderingBasket();   // отрисовка корзины
+    }, 
+
 
 };
 
-function myClickToBasket(e) {   // клик по кнопке добавить товар в корзину 
-    e.stopPropagation();
-    basket.completion(Number(this.getAttribute('data')));   // добавить товар
-    basket.countBasketPrice();   // пересчет стоимости в корзине
-    basket.renderingBasket();   // отрисовка корзины
-} 
- 
-function  myCompl(e) {     // клик по кнопке очистить 
-    basket.clearBasket();
-}
 
 function myClickToSlaider(e){ // клик по товару для открытия слайдера
     
@@ -226,8 +237,6 @@ function myClickToSlaider(e){ // клик по товару для открыт�
    
 }
 
-let basket = new Basket();      // создаем корзину 
-let catalog = new Catalog();    // создаем каталог 
 basket.getBasket();             // отрисовка корзины
 catalog.completion();           // наполнение каталога
 catalog.getCatalog();           // отрисовка каталога
