@@ -5,7 +5,7 @@ let basket = {  // корзина
     
     segments : [],  // товары в корзине
 
-    open : true,
+    open : true,   // признак отрыта корзина или нет
 
     total: {}, // стоимость товаров в ко
       
@@ -37,7 +37,9 @@ let basket = {  // корзина
             `;
             bask.insertAdjacentHTML("beforeend", productBasket);
         }
-        
+    },
+
+    renderBasketTotal() {  // отрисока общей стоимости товаров
         const total = this.countBasketPrice();
         let board = document.getElementById('total');
         if (total.quantity === 0) {
@@ -45,18 +47,17 @@ let basket = {  // корзина
         } else{
             board.innerHTML = `В корзине: ${total.quantity} товаров на сумму ${total.total} рублей`;
         };
-            
     },
 
     countBasketPrice() {           // подсчет стоимости товара в корзине
         let total = 0;
         let quantity = 0;
-        for (let i = 0; i<this.segments.length; i++ ){
+        for (let i = 0; i < this.segments.length; i++ ){
             total += this.segments[i].quantity * this.segments[i].price;
             quantity += this.segments[i].quantity;
         }
         
-        return {quantity:quantity, total:total};
+        return {quantity: quantity, total: total};
     },
 
     createBasket(){                 // создание окна корзины
@@ -76,16 +77,18 @@ let basket = {  // корзина
                 <div id="total">Корзина пуста</div>
                 <div class="butt"> 
                     <button data-some="clear">Очистить</button> 
-                    <button data-some="further">Далее</button>
+                    <button data-some="fartherToAddress">Далее</button>
                 </div>
             </div>
         `;          // разметка корзины  
                        
         board.insertAdjacentHTML("afterbegin", productMarkup);
         
+        // обработчик клика по крестику для удаления товара из корзины
         let bord = document.getElementById('basket');
         bord.addEventListener('click',(event) => {this.proructDelBasket(event)});
         
+        // обработчик клика по кнопкам навигации
         let butt = document.querySelector('.butt');
         butt.addEventListener('click',(event) => {this.clickButtonBasket(event)});
        
@@ -97,17 +100,15 @@ let basket = {  // корзина
             case "clear" :
                 this.clearBasket();
                 break;
-            case "further" :
-                this.further();
+            case "fartherToAddress" :
+                this.fartherToAddress();
                 break;
-            
-            case "back" :
+            case "backToBasket" :
                 this.backToBasket();
                 break;   
-            case "furtherD" :
-                this.furtherD();
+            case "fartherToReview" :
+                this.fartherToReview();
                 break; 
-            
             case "stop" :
                 this.stop();
                 break; 
@@ -124,16 +125,16 @@ let basket = {  // корзина
     proructDelBasket (event) {       // удаление товара из корзины
         let node = event.target;
         let nodeDel = node.parentNode.parentNode;
-        node.parentNode.parentNode.parentNode.removeChild(nodeDel);
-        basket.segments.splice(event.target.getAttribute('data'),1);
+        node.parentNode.parentNode.parentNode.removeChild(nodeDel); // удаление блока продукта из корзины
+        basket.segments.splice(event.target.getAttribute('data'),1); // удаление товара из объекта корзины
         if (basket.segments.length === 0) {
             basket.clearBasket();
         } else {
-            basket.countBasketPrice();
+            basket.renderBasketTotal();
         }
     },
 
-    further(e){                     // далее на адрес доставки
+    fartherToAddress(e){                     // далее на адрес доставки
         this.open = false;
         
         let board = document.getElementById('bask');
@@ -153,8 +154,8 @@ let basket = {  // корзина
                 <div class="productnav">
                     <div id="total"></div>
                     <div class="butt"> 
-                        <button data-some="back">Назад</button> 
-                        <button data-some="furtherD">Далее</button>
+                        <button data-some="backToBasket">Назад</button> 
+                        <button data-some="fartherToReview">Далее</button>
                     </div>
                 </div>
             </div>
@@ -170,7 +171,7 @@ let basket = {  // корзина
         }, 500);
     },
 
-    furtherD(){                     // далее на отзывы
+    fartherToReview(){                     // далее на отзывы
         let board = document.getElementById('bask');
         board.classList.add('bask-d');
                 
@@ -182,7 +183,7 @@ let basket = {  // корзина
                 <div class="productnav">
                     <div id="total"></div>
                     <div class="butt"> 
-                        <button data-some="further">Назад</button> 
+                        <button data-some="fartherToAddress">Назад</button> 
                         <button data-some="stop">Далее</button>
                     </div>
                 </div>
@@ -229,7 +230,7 @@ let catalog = {  // каталог
             let productName =`"rrrrr${a}"`;
             let productPrice = a * 100;
             let prod = new Product({title:productName, quantity:1, price:productPrice});
-            prod.slide = [`"img/rectangle_${a}.jpg"` ,"img/rectangle_2.jpg","img/rectangle_3.jpg","img/rectangle_4.jpg" ];
+            prod.slide = [`"img/rectangle_${a}.jpg"`, "img/rectangle_2.jpg", "img/rectangle_3.jpg", "img/rectangle_4.jpg" ];
             prod.img = `img/rectangle_${a}.jpg`;
             this.segments.push(prod);
         }
@@ -240,7 +241,7 @@ let catalog = {  // каталог
         board.className = 'catalog';
         board.innerHTML = ` `;
         let y = Math.floor(Math.random() * (4) );
-        for (let a = y; a < y+4; a++){
+        for (let a = y; a < (y + 4); a++){
             let productMarkup = `   
             <div class="product-cont-elem" data="${a}">
                 <img src="${catalog.segments[a].img}" alt="">
@@ -258,21 +259,18 @@ let catalog = {  // каталог
             `;          // разметка каталога
             
             board.insertAdjacentHTML("beforeend", productMarkup);
-    
+            const butt = document.getElementsByClassName('product-cont-elem-img-1'); //
+            const butt1 = document.getElementsByClassName('product-cont-elem');     //
+            butt[butt.length-1].addEventListener('click', this.myClickToBasket);    // вешаем слушатель на кнопки по клику для добавления товара в корзину
+            butt1[butt.length-1].addEventListener('click',this.myClickToSlaider);   // вешаем слушатель на изображение по клику для открытия слайдера
         }
-        const butt = document.getElementsByClassName('product-cont-elem-img-1'); //
-        const butt1 = document.getElementsByClassName('product-cont-elem'); //
-        for (let i = 0; i < butt.length; i++) {   
-            butt[i].addEventListener('click', this.myClickToBasket);   // вешаем слушатель на кнопки по клику для добавления товара в корзину
-            butt1[i].addEventListener('click', this.myClickToSlaider);   // вешаем слушатель на изображение по клику для открытия слайдера
-        };
     },
 
     myClickToBasket(e) {   // клик по кнопке добавить товар в корзину 
         e.stopPropagation();
         if (basket.open) {  // если корзина открыта
             basket.addProductToCart(Number(this.getAttribute('data')));   // добавить товар в объект корзина
-          //  basket.countBasketPrice();   // пересчет стоимости в корзине
+            basket.renderBasketTotal()   // отрисовка общей стоимости товаров
             basket.renderingBasket();    // отрисовка корзины
         } else{
             alert('Вернитесь к корзине!');
@@ -281,134 +279,12 @@ let catalog = {  // каталог
 
     myClickToSlaider(e){ // клик по товару для открытия слайдера
         e.stopPropagation();
-        let slade = `
-        <div class="slider-win">
-            <div class="slider" data-width="720px" data-height="480px">
-                <div class="slider-item hidden-slide">
-                    <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[0]} alt="">
-                </div>
-                <div class="slider-item hidden-slide">
-                    <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[1]}  alt="">
-                </div>
-                <div class="slider-item hidden-slide">
-                    <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[2]}  alt="">
-                </div>
-                <div class="slider-item hidden-slide">
-                    <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[3]}  alt="">
-                </div>
-            </div>
-        </div>
-        `
-        document.getElementById('catalog').insertAdjacentHTML("afterend", slade);
-    
-        let slider = document.querySelector('.slider');
-                
-        // Создаем левую стрелку
-        let leftArrow = document.createElement('i');
-        leftArrow.classList.add('fas', 'fa-chevron-circle-left', 'slider-leftArrow');
-        slider.insertAdjacentElement("beforeend", leftArrow);
-        
-        // Создаем правую стрелку
-        let rightArrow = document.createElement('i');
-        rightArrow.classList.add('fas', 'fa-chevron-circle-right', 'slider-rightArrow');
-        slider.insertAdjacentElement("beforeend", rightArrow);
-        
-        // Создаем кнопку закрытия
-        let closedCaptioning = document.createElement('i');
-        closedCaptioning.classList.add('fas', 'fa-times', 'closed-captioning');
-        slider.insertAdjacentElement("beforeend", closedCaptioning);
-        
-        setSizes(slider);
-        
-        images.init();
-        
-        leftArrow.addEventListener('click', function () {
-            images.setNextLeftImage();
-        });
-        
-        rightArrow.addEventListener('click', function () {
-            images.setNextRightImage();
-        });
-        
-        closedCaptioning.addEventListener('click', function () {
-            images.setClosedSlaider();
-        });
-       
-    },
+        let data = Number(this.getAttribute('data'));
+        createSlaider(data);
+    }
 
 };
 
 basket.createBasket();                 // отрисовка корзины
 catalog.addProductCatalog();           // наполнение каталога
-catalog.getCatalog();                   // отрисовка каталога
-
-/**
- * Функция берет у элемента слайдера его data-атрибуты размеров,
- * и если они определены, то самому слайдеру меняет размеры.
- * @param {HTMLDivElement} slider 
- */
-function setSizes(slider) {   // размер картинки слайдера
-    let width = slider.getAttribute("data-width");
-    let height = slider.getAttribute("data-height");
-    if (width !== null && width !== "") {
-        slider.style.width = width;
-    }
-    if (height !== null && height !== "") {
-        slider.style.height = height;
-    }
-}
-
-let images = {  // Объект слайдера
-    /* {int} Номер текущего изображения */
-    currentIdx: 0,
-
-    /* {HTMLDivElement[]} slides элементы слайдов */
-    slides: [],
-    
-    /** Получаем все слайды и показываем первый слайд. */
-    init() {
-        this.slides = document.querySelectorAll('.slider-item');
-        this.showImageWithCurrentIdx();
-    },
-
-    /** Берем слайд с текущим индексом и убираем у него класс
-     * hidden-slide. */
-    showImageWithCurrentIdx() {
-        this.slides[this.currentIdx].classList.remove('hidden-slide');
-    },
-
-    /** Видимому (текущему) слайду добавляем класс hidden-slide. */
-      hideVisibleImage() {
-        this.slides[this.currentIdx].classList.add("hidden-slide");
-      },
-
-    /** Переключиться на предыдущее изображение. */
-    setNextLeftImage() {
-        this.hideVisibleImage();
-        if (this.currentIdx == 0) {
-            this.currentIdx = this.slides.length - 1;
-        } else {
-            this.currentIdx--;
-        }
-        this.showImageWithCurrentIdx();
-    },
-
-    /** Переключиться на следующее изображение. */
-    setNextRightImage() {
-        this.hideVisibleImage();
-        if (this.currentIdx == this.slides.length - 1) {
-            this.currentIdx = 0;
-        } else {
-            this.currentIdx++;
-        }
-        this.showImageWithCurrentIdx();
-    },
-    
-    /** Закрыть слайдер. */
-    setClosedSlaider() {
-        this.hideVisibleImage();
-        this.currentIdx = 0;
-        let node = document.querySelector('.slider-win');
-        node.parentNode.removeChild(node);
-    },
-}
+catalog.getCatalog();                  // отрисовка каталога

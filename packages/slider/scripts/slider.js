@@ -1,19 +1,19 @@
 'use strict';
 
 document.head.insertAdjacentHTML("afterbegin", '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">');
-class Slaider {
-    myClickToSlaider(e) { // клик по товару для открытия слайдера
+
+function createSlaider (e) { // отрисовка слайдера
         let slade = `
             <div class="slider-win">
                 <div class="slider" data-width="720px" data-height="480px">
                     <div class="slider-item hidden-slide">
-                        <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[0]} alt="">
+                        <img src=${catalog.segments[e].slide[0]} alt="">
                     </div>
                     <div class="slider-item hidden-slide">
-                         <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[1]} alt="">
+                         <img src=${catalog.segments[e].slide[1]} alt="">
                     </div>
                     <div class="slider-item hidden-slide">
-                        <img src=${catalog.segments[Number(this.getAttribute('data'))].slide[2]} alt="">
+                        <img src=${catalog.segments[e].slide[2]} alt="">
                     </div>
                 </div>
             </div>
@@ -21,12 +21,7 @@ class Slaider {
         document.getElementById('catalog').insertAdjacentHTML("afterend", slade);
 
         let slider = document.querySelector('.slider');
-
-        // Создаем иконку загрузки
-        //let loadIcon = document.createElement('i');
-        //loadIcon.classList.add('fas', 'fa-spinner', 'fa-spin');
-       // slider.insertAdjacentElement("afterbegin", loadIcon);
-
+        
         // Создаем левую стрелку
         let leftArrow = document.createElement('i');
         leftArrow.classList.add('fas', 'fa-chevron-circle-left', 'slider-leftArrow');
@@ -45,34 +40,19 @@ class Slaider {
         setSizes(slider);
         images.init();
 
-        // Ждем когда весь контент целиком загрузится
-        window.addEventListener('load', function () {
-            leftArrow.addEventListener('click', function () {
-                images.setNextLeftImage();
-            });
-
-            rightArrow.addEventListener('click', function () {
-                images.setNextRightImage();
-            });
-
-            closedCaptioning.addEventListener('click', function () {
-                images.closedImage();
-            });
-
-            // Инициализация слайдера
-            images.init();
-            // Скрываем иконку загрузки
-            hideLoadIcon(loadIcon);
+        leftArrow.addEventListener('click', function () {
+            images.setNextLeftImage();
         });
-    },
-};
-        /**
-         * Функция скрывает иконку загрузки
-         * @param {HTMLElement} loadIcon 
-         */
-        function hideLoadIcon(loadIcon) {
-            loadIcon.style.display = "none";
-        }
+
+        rightArrow.addEventListener('click', function () {
+            images.setNextRightImage();
+        });
+
+        closedCaptioning.addEventListener('click', function () {
+            images.setClosedSlaider();
+        });
+
+    }
 
         /**
          * Функция берет у элемента слайдера его data-атрибуты размеров,
@@ -89,8 +69,7 @@ class Slaider {
                 slider.style.height = height;
             }
         }
-        //setSizes(slider);
-
+       
         // Объект слайдера
         let images = {
             /* {int} Номер текущего изображения */
@@ -136,5 +115,13 @@ class Slaider {
                     this.currentIdx++;
                 }
                 this.showImageWithCurrentIdx();
+            },
+
+             /** Закрыть слайдер. */
+            setClosedSlaider() {
+                this.hideVisibleImage();
+                this.currentIdx = 0;
+                let node = document.querySelector('.slider-win');
+                node.parentNode.removeChild(node);
             },
         }
